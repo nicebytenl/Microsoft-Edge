@@ -5,9 +5,9 @@
 $regPath = "HKLM:\SOFTWARE\WOW6432Node\Microsoft\EdgeUpdate\Clients\{56EB18F8-B008-4CBD-B6D2-8C97FE7E9062}"
 
 # Check if 'opv' registry value exists
-$ovpValue = Get-ItemProperty -Path $regPath -Name "opv" -ErrorAction SilentlyContinue
+$opvValue = Get-ItemProperty -Path $regPath -Name "opv" -ErrorAction SilentlyContinue
 
-if ($ovpValue) {
+if ($opvValue) {
     # Read the 'cmd' value, which contains the full setup command
     $cmdValue = (Get-ItemProperty -Path $regPath -Name "cmd" -ErrorAction SilentlyContinue).cmd
 
@@ -20,5 +20,5 @@ if ($ovpValue) {
         Write-Warning "'cmd' registry value not found, unable to continue."
     }
 } else {
-    Write-Output "No 'ovp' registry value found. No action required."
+    Write-Output "No 'opvv' registry value found. No action required."
 }
