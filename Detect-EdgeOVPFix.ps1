@@ -1,24 +1,15 @@
 # Jordy Smits - 16-06-2025
-# This script checks for the existence of the 'opv' registry key.
-# If found, it reads and executes the corresponding 'cmd' value from the same registry path.
+# This script checks if the 'opv' registry value still exists. If it does, detection fails. If not, detection passes.
 
-$regPath = "HKLM:\SOFTWARE\WOW6432Node\Microsoft\EdgeUpdate\Clients\{56EB18F8-B008-4CBD-B6D2-8C97FE7E9062}"
+$regPath = "HKLM\SOFTWARE\WOW6432Node\Microsoft\EdgeUpdate\Clients\{56EB18F8-B008-4CBD-B6D2-8C97FE7E9062}"
 
-# Check if 'opv' registry value exists
-$opvValue = Get-ItemProperty -Path $regPath -Name "opv" -ErrorAction SilentlyContinue
+try {
+# Attempt to get the 'opv' registry value
+$opv = Get-ItemProperty -Path $regPath -Name "opv" -ErrorAction Stop
 
-if ($opvValue) {
-    # Read the 'cmd' value, which contains the full setup command
-    $cmdValue = (Get-ItemProperty -Path $regPath -Name "cmd" -ErrorAction SilentlyContinue).cmd
-
-    if ($cmdValue) {
-        Write-Output "Executing Edge fix command from registry: $cmdValue"
-
-        # Start the process using the exact command stored in the registry
-        Start-Process -FilePath "cmd.exe" -ArgumentList "/c `"$cmdValue`"" -Wait -NoNewWindow
-    } else {
-        Write-Warning "'cmd' registry value not found, unable to continue."
-    }
-} else {
-    Write-Output "No 'opvv' registry value found. No action required."
+# If 'opv' exists, detection fails (exit code 1)
+Write-Output "'ovp' registry value is still present: $opv"
+} catch {
+# If 'opv' does not exist, detection is successful (exit code 0)
+Write-Output "'opv' registry value not found. No action required"
 }
