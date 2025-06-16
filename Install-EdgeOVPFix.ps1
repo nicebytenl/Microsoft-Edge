@@ -1,8 +1,8 @@
 # Jordy Smits - 16-06-2025
-# This script checks for the 'ovp' registry value and runs the 'cmd' fix if present.
-# Logs actions to C:\Temp\EdgeOVPFix.log. Exit code 0 = success, 1 = error.
+# This script checks for the 'opv' registry value and runs the 'cmd' fix if present.
+# Logs actions to C:\Temp\EdgeOPVFix.log. Exit code 0 = success, 1 = error.
 
-$logFile = "C:\Temp\EdgeOVPFix.log"
+$logFile = "C:\Temp\EdgeOPVFix.log"
 
 # Ensure C:\Temp exists
 if (-not (Test-Path -Path "C:\Temp")) {
@@ -15,14 +15,14 @@ function Write-Log {
     Add-Content -Path $logFile -Value "$timestamp - $message"
 }
 
-Write-Log "=== Starting Edge OVP Fix ==="
+Write-Log "=== Starting Edge OPV Fix ==="
 
 $regPath = "HKLM:\SOFTWARE\WOW6432Node\Microsoft\EdgeUpdate\Clients\{56EB18F8-B008-4CBD-B6D2-8C97FE7E9062}"
 
 try {
-    # Check for 'ovp' registry value
-    $ovpValue = Get-ItemProperty -Path $regPath -Name "ovp" -ErrorAction Stop
-    Write-Log "'ovp' registry value found."
+    # Check for 'opv' registry value
+    $opvValue = Get-ItemProperty -Path $regPath -Name "opv" -ErrorAction Stop
+    Write-Log "'opv' registry value found."
 
     # Read and validate 'cmd' value
     $cmdValue = (Get-ItemProperty -Path $regPath -Name "cmd" -ErrorAction Stop).cmd
